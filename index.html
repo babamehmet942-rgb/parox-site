@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>paroxV2 - Giriş Yap</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #0d6efd; 
+            --background-color: #121212; 
+            --surface-color: #1e1e1e;
+            --text-color: #e0e0e0; 
+            --heading-color: #ffffff; 
+            --secondary-text-color: #888;
+            --error-color: #dc3545; 
+            --success-color: #198754; 
+            --border-radius: 12px;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0; 
+            background-color: var(--background-color); 
+            color: var(--text-color); 
+        }
+        #login-overlay { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background-color: var(--background-color); 
+            display: flex; justify-content: center; align-items: center; 
+            z-index: 2000; 
+            transition: opacity 0.5s ease; 
+        }
+        .login-box { 
+            background-color: var(--surface-color); 
+            padding: 2.5rem; 
+            border-radius: var(--border-radius); 
+            box-shadow: var(--shadow); 
+            text-align: center; 
+            width: 100%; 
+            max-width: 350px; 
+        }
+        .login-box h2 { 
+            color: var(--heading-color); 
+            margin-top: 0; 
+            margin-bottom: 0.5rem; 
+        }
+        #login-message { 
+            color: var(--secondary-text-color); 
+            margin-bottom: 1.5rem; 
+            min-height: 20px; 
+            font-weight: 500; 
+        }
+        #codeInput { 
+            width: 100%; padding: 0.8rem 1rem; margin-bottom: 1.5rem; 
+            border-radius: 8px; border: 1px solid #444; 
+            background-color: #2b2b2b; 
+            color: var(--text-color); 
+            font-size: 1rem; 
+            box-sizing: border-box; 
+            text-align: center; 
+        }
+        #loginButton { 
+            width: 100%; padding: 0.8rem 1rem; border: none; 
+            border-radius: 8px; background-color: var(--primary-color); 
+            color: white; font-size: 1rem; font-weight: bold; 
+            cursor: pointer; transition: background-color 0.3s; 
+        }
+        #loginButton:hover { background-color: #0b5ed7; }
+        #loginButton:disabled { background-color: #555; cursor: not-allowed; }
+        #siteContent { display: none; }
+        .navbar { 
+            background-color: var(--surface-color); padding: 1rem 2rem; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.4); display: flex; 
+            justify-content: space-between; align-items: center; 
+            position: sticky; top: 0; z-index: 1000; 
+        }
+        .navbar .logo { 
+            font-size: 1.8rem; font-weight: 700; 
+            color: var(--primary-color); text-decoration: none; 
+        }
+        .navbar .nav-links a { 
+            color: var(--secondary-text-color); text-decoration: none; 
+            margin-left: 1.5rem; font-weight: 500; transition: color 0.3s; 
+        }
+        .navbar .nav-links a:hover { color: var(--primary-color); }
+        .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+        .hero { 
+            text-align: center; padding: 4rem 2rem; background: #1a1a1a; 
+            border-radius: var(--border-radius); margin-bottom: 3rem; 
+        }
+        .hero h1 { 
+            font-size: 3.5rem; color: var(--heading-color); margin-bottom: 1rem; 
+        }
+        .hero p { 
+            font-size: 1.2rem; color: var(--secondary-text-color); 
+            max-width: 600px; margin: 0 auto 2rem auto; 
+        }
+        .search-container { 
+            position: relative; width: 100%; max-width: 500px; 
+            margin: 0 auto; display: flex; align-items: center;
+        }
+        #searchInput { 
+            width: 100%; padding: 1rem 1.5rem; padding-right: 4rem; 
+            font-size: 1rem; border-radius: 50px; border: 1px solid #333; 
+            background-color: #2b2b2b; color: var(--text-color); 
+            transition: all 0.3s; box-sizing: border-box;
+        }
+        #searchInput::placeholder { color: var(--secondary-text-color); }
+        #searchInput:focus { 
+            outline: none; border-color: var(--primary-color); 
+            box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.25); 
+        }
+        .search-container i { 
+            position: absolute; right: 1.5rem; top: 50%; 
+            transform: translateY(-50%); color: var(--secondary-text-color); 
+            pointer-events: none; font-size: 1.2rem;
+        }
+        .section-title { 
+            font-size: 2.5rem; font-weight: 700; color: var(--heading-color); 
+            margin-bottom: 2rem; text-align: center; 
+        }
+        .app-grid { 
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); 
+            gap: 2rem; margin-bottom: 4rem; 
+        }
+        .app-card { 
+            background-color: var(--surface-color); border-radius: var(--border-radius); 
+            box-shadow: var(--shadow); border: 1px solid #2c2c2c; 
+            padding: 1.5rem; display: flex; flex-direction: column; 
+            transition: transform 0.3s, box-shadow 0.3s; 
+        }
+        .app-card:hover { 
+            transform: translateY(-8px); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7); 
+        }
+        .app-card-header { display: flex; align-items: center; margin-bottom: 1rem; }
+        .app-card-header img { 
+            width: 64px; height: 64px; border-radius: 16px; 
+            margin-right: 1rem; object-fit: cover; 
+        }
+        .app-card-header .app-info { line-height: 1.3; }
+        .app-card-header h3 { margin: 0; font-size: 1.3rem; color: var(--heading-color); }
+        .app-card-header .category { font-size: 0.9rem; color: var(--secondary-text-color); }
+        .app-card-body p { font-size: 0.95rem; line-height: 1.6; flex-grow: 1; }
+        .app-card-footer { 
+            display: flex; justify-content: space-between; align-items: center; 
+            margin-top: 1rem; border-top: 1px solid #333; padding-top: 1rem; 
+        }
+        .app-card-footer .version { 
+            font-size: 0.8rem; font-weight: 600; color: #17a2b8; 
+            background-color: rgba(23, 162, 184, 0.1); 
+            padding: 0.2rem 0.5rem; border-radius: 5px; 
+        }
+        .card-download-link { 
+            background-color: var(--primary-color); color: white; padding: 0.6rem 1.2rem; 
+            border-radius: 8px; text-decoration: none; font-weight: 600; 
+            transition: background-color 0.3s; 
+        }
+        .card-download-link:hover { background-color: #0b5ed7; }
+        .footer { 
+            background-color: #1c1c1c; color: var(--secondary-text-color); 
+            padding: 3rem 2rem 1rem 2rem; margin-top: 3rem; 
+        }
+        .footer-bottom { 
+            text-align: center; margin-top: 3rem; 
+            padding-top: 2rem; border-top: 1px solid #333; 
+        }
+    </style>
+</head>
+<body>
+    <div id="login-overlay">
+        <div class="login-box">
+            <h2><i class="fas fa-lock"></i> Giriş Kodu</h2>
+            <p id="login-message">Erişim için size verilen kodu girin.</p>
+            <input type="text" id="codeInput" placeholder="••••••••">
+            <button id="loginButton">Giriş Yap</button>
+        </div>
+    </div>
+    <div id="siteContent">
+        <nav class="navbar">
+            <a href="index.html" class="logo"><i class="fas fa-bolt"></i> paroxV2</a>
+            <div class="nav-links">
+                <a href="index.html">Ana Sayfa</a>
+                <a href="iletisim.html">İletişim</a>
+            </div>
+        </nav>
+        <div class="container">
+            <header class="hero">
+                <h1>ParoxV2 / Hoş Geldiniz</h1>
+                <p>Aradığınız tüm özel uygulamalar burada.</p>
+                <div class="search-container">
+                    <input type="text" id="searchInput" placeholder="Uygulama adını yazın...">
+                    <i class="fas fa-search"></i>
+                </div>
+            </header>
+            <section id="all-apps">
+                <h2 class="section-title">Tüm Uygulamalar</h2>
+                <div class="app-grid"></div>
+            </section>
+        </div>
+        <footer class="footer">
+            <div class="footer-bottom"> &copy; 2025 paroxV2. Tüm hakları saklıdır. </div>
+        </footer>
+    </div>
+
+    <script>
+        // --- SİTE VERİLERİ ---
+        const uygulamalar = [
+            { ad: "Sms Bomber", kategori: "Saldırı", aciklama: "Dosyayı Çalıştırıp Sms Saldırısı Yapabilirsiniz.", versiyon: "v2.10.0", ikon: "images/sms-bomber.png", indir_linki: "https://itransfer.com.tr/3ADWqy4A" },
+            { ad: "Site Kurma", kategori: "Geliştirici Araçları", aciklama: "Geliştiriciler için tasarlanmış, eklentilerle zenginleştirilmiş site editörü.", versiyon: "v2.1.5", ikon: "images/site.png", indir_linki: "https://itransfer.com.tr/gsiGN3TB" },
+            { ad: "Sorgu Paneli", kategori: "Sorgulama", aciklama: "Hafif ve güçlü sorgulama alanları.", versiyon: "v3.5.1", ikon: "images/sorgu.png", indir_linki: "https://itransfer.com.tr/HTLDEdIu" },
+            { ad: "Token Grabber", kategori: "Araçlar", aciklama: "Farklı bir üyenin hesabındaki bilgilere ulaşım kaynağı.", versiyon: "v4.8.2", ikon: "images/token.png", indir_linki: "https://itransfer.com.tr/uUqfUAHz" },
+            { ad: "Oyun Sunucusu", kategori: "Oyun", aciklama: "Bir oyun sunucusu açabilmeniz için gereken site.", versiyon: "v1.5.0", ikon: "images/oyun-sunucu.png", indir_linki: "https://itransfer.com.tr/pNvm4zez" }
+        ];
+
+        // GİRİŞ KODLARINI BURADAN YÖNETECEKSİN
+        const gecerliKodlar = [
+            "PAROX-A4B7", "PAROX-C8D1", "PAROX-E2F5", "PAROX-G6H9",
+            "KOD-1122", "KOD-3344", "KOD-5566", "KOD-7788",
+            "GIZLI-9A8B", "GIZLI-7C6D", "GIZLI-5E4F", "GIZLI-3G2H"
+        ];
+
+        // --- GİRİŞ SİSTEMİ MANTIĞI (IP KİLİTLEMELİ) ---
+        const loginOverlay = document.getElementById('login-overlay');
+        const codeInput = document.getElementById('codeInput');
+        const loginButton = document.getElementById('loginButton');
+        const siteContent = document.getElementById('siteContent');
+        const loginMessage = document.getElementById('login-message');
+
+        async function getIPAddress() {
+            try {
+                const response = await fetch('https://api.ipify.org?format=json');
+                const data = await response.json();
+                return data.ip;
+            } catch (error) {
+                console.error("IP adresi alınamadı:", error);
+                return null;
+            }
+        }
+
+        loginButton.addEventListener('click', async () => {
+            loginButton.disabled = true;
+            loginMessage.textContent = "Kontrol ediliyor...";
+            loginMessage.style.color = "var(--secondary-text-color)";
+
+            const currentUserIP = await getIPAddress();
+            if (!currentUserIP) {
+                loginMessage.textContent = "IP adresiniz alınamadı. Lütfen tekrar deneyin.";
+                loginMessage.style.color = "var(--error-color)";
+                loginButton.disabled = false;
+                return;
+            }
+
+            const girilenKod = codeInput.value.trim();
+            // Tarayıcı hafızasından KULLANILMIŞ kodları ve IP'lerini al
+            let kullanilmisKodlar = JSON.parse(localStorage.getItem('kullanilmisKodlarV2')) || [];
+            
+            // 1. Adım: Girilen kod, geçerli kodlar listesinde var mı?
+            if (gecerliKodlar.includes(girilenKod)) {
+                const kullanilanKayit = kullanilmisKodlar.find(kayit => kayit.code === girilenKod);
+
+                // 2. Adım: Kod daha önce kullanılmış mı?
+                if (kullanilanKayit) {
+                    // EVET, kullanılmış. IP adresleri aynı mı?
+                    if (kullanilanKayit.ip === currentUserIP) {
+                        // IP'ler aynı, bu aynı kişi. Girişine izin ver.
+                        grantAccess("Tekrar hoş geldiniz!");
+                    } else {
+                        // IP'ler farklı, bu başka biri. Girişi engelle.
+                        loginMessage.textContent = "Bu kod başka birine aittir!";
+                        loginMessage.style.color = "var(--error-color)";
+                    }
+                } else {
+                    // HAYIR, kod ilk defa kullanılıyor.
+                    // Kodu mevcut IP ile eşleştirip hafızaya kaydet.
+                    kullanilmisKodlar.push({ code: girilenKod, ip: currentUserIP });
+                    localStorage.setItem('kullanilmisKodlarV2', JSON.stringify(kullanilmisKodlar));
+                    grantAccess("Giriş başarılı!");
+                }
+            } else {
+                // Kod, geçerli kodlar listesinde hiç yok.
+                loginMessage.textContent = "Geçersiz kod girdiniz!";
+                loginMessage.style.color = "var(--error-color)";
+            }
+            loginButton.disabled = false;
+        });
+        
+        function grantAccess(message) {
+            loginMessage.textContent = message;
+            loginMessage.style.color = "var(--success-color)";
+            setTimeout(() => {
+                loginOverlay.style.opacity = '0';
+                setTimeout(() => {
+                    loginOverlay.style.display = 'none';
+                    siteContent.style.display = 'block';
+                }, 500);
+            }, 500);
+        }
+
+        // --- SİTE İÇİ FONKSİYONLAR ---
+        const appGrid = document.querySelector('#all-apps .app-grid');
+        uygulamalar.forEach(app => {
+            const card = document.createElement('div');
+            card.className = 'app-card';
+            card.innerHTML = `<div class="app-card-header"><img src="${app.ikon}" alt="${app.ad}"><div class="app-info"><h3>${app.ad}</h3><span class="category">${app.kategori}</span></div></div><div class="app-card-body"><p>${app.aciklama}</p></div><div class="app-card-footer"><span class="version">${app.versiyon}</span><a href="${app.indir_linki}" class="card-download-link" download>İndir</a></div>`;
+            appGrid.appendChild(card);
+        });
+
+        document.getElementById('searchInput').addEventListener('keyup', function() {
+            let filter = this.value.toUpperCase();
+            let appCards = document.querySelectorAll('.app-card');
+            appCards.forEach(card => {
+                let appName = card.querySelector('h3').textContent.toUpperCase();
+                if (appName.includes(filter)) { card.style.display = ""; } else { card.style.display = "none"; }
+            });
+        });
+
+        // --- KONSOL KORUMA KODU ---
+        document.addEventListener('contextmenu', function(event) {
+            event.preventDefault();
+        });
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'F12' || (event.ctrlKey && event.shiftKey && ['I', 'J', 'C'].includes(event.key.toUpperCase())) || (event.ctrlKey && event.key.toUpperCase() === 'U')) {
+                event.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>paroxV2 - İletişim</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        /* CSS kodları burada, hiçbir değişiklik yok */
+        :root {
+            --primary-color: #0d6efd; --background-color: #121212; --surface-color: #1e1e1e;
+            --text-color: #e0e0e0; --heading-color: #ffffff; --secondary-text-color: #888;
+            --success-color: #198754; --border-radius: 12px; --shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background-color: var(--background-color); color: var(--text-color); }
+        .navbar { background-color: var(--surface-color); padding: 1rem 2rem; box-shadow: 0 2px 4px rgba(0,0,0,0.4); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
+        .navbar .logo { font-size: 1.8rem; font-weight: 700; color: var(--primary-color); text-decoration: none; }
+        .navbar .nav-links a { color: var(--secondary-text-color); text-decoration: none; margin-left: 1.5rem; font-weight: 500; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+        .section-title { font-size: 2.5rem; font-weight: 700; color: var(--heading-color); margin-bottom: 2rem; text-align: center; }
+        .footer { background-color: #1c1c1c; padding: 3rem 2rem 1rem 2rem; margin-top: 3rem; }
+        .footer-bottom { text-align: center; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid #333; }
+        .contact-wrapper { display: flex; flex-wrap: wrap; gap: 3rem; background-color: var(--surface-color); padding: 2.5rem; border-radius: var(--border-radius); }
+        .contact-info { flex: 1; min-width: 300px; }
+        .contact-info .info-item { display: flex; align-items: center; margin-bottom: 1.5rem; }
+        .contact-info .info-item i { font-size: 1.2rem; color: var(--primary-color); margin-right: 1rem; width: 25px; text-align: center;}
+        .contact-form { flex: 2; min-width: 300px; }
+        .contact-form input, .contact-form textarea { width: 100%; padding: 0.8rem 1rem; border-radius: 8px; border: 1px solid #444; background-color: #2b2b2b; color: var(--text-color); }
+        .contact-form button { width: auto; min-width: 150px; padding: 0.8rem 1.5rem; border: none; border-radius: 8px; background-color: var(--primary-color); color: white; font-weight: bold; cursor: pointer; }
+        #form-success-message { color: var(--success-color); margin-top: 1rem; font-weight: bold; display: none; }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="logo"><i class="fas fa-bolt"></i> paroxV2</a>
+        <div class="nav-links">
+            <a href="index.html">Ana Sayfa</a>
+            <a href="iletisim.html">İletişim</a>
+        </div>
+    </nav>
+    <div class="container">
+        <h2 class="section-title">Bize Ulaşın</h2>
+        <div class="contact-wrapper">
+            <div class="contact-info">
+                <h3>İletişim Bilgileri</h3>
+                <p>Soru, öneri veya işbirliği talepleriniz için formu kullanabilirsiniz.</p>
+                <div class="info-item"><i class="fas fa-envelope"></i> <span>destek@paroxv2.com</span></div>
+                <div class="info-item"><i class="fab fa-discord"></i> <span>parox_destek</span></div>
+                <div class="info-item"><i class="fab fa-telegram"></i> <span>@paroxv2destek</span></div>
+            </div>
+            <form class="contact-form" id="contactForm">
+                <div class="form-group"><label for="name">Adınız Soyadınız</label><input type="text" id="name" required></div>
+                <div class="form-group"><label for="email">E-posta Adresiniz</label><input type="email" id="email" required></div>
+                <div class="form-group"><label for="message">Mesajınız</label><textarea id="message" required></textarea></div>
+                <button type="submit">Gönder</button>
+                <p id="form-success-message">Mesajınız başarıyla alındı!</p>
+            </form>
+        </div>
+    </div>
+    <footer class="footer">
+        <div class="footer-bottom"> &copy; 2025 paroxV2. Tüm hakları saklıdır. </div>
+    </footer>
+
+    <script>
+        // İletişim Formu Scripti
+        const contactForm = document.getElementById('contactForm');
+        const successMessage = document.getElementById('form-success-message');
+        contactForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            successMessage.style.display = 'block';
+            contactForm.reset();
+            setTimeout(() => { successMessage.style.display = 'none'; }, 3000);
+        });
+
+        // --- YENİ EKLENEN KONSOL KORUMA KODU ---
+        document.addEventListener('contextmenu', function(event) {
+            event.preventDefault();
+        });
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'F12' || (event.ctrlKey && event.shiftKey && ['I', 'J', 'C'].includes(event.key.toUpperCase())) || (event.ctrlKey && event.key.toUpperCase() === 'U')) {
+                event.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>
